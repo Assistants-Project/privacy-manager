@@ -1,0 +1,33 @@
+FROM arm64v8/alpine:latest
+RUN apk update && \
+    apk add --no-cache python3 py3-pip tzdata coreutils iptables-legacy iptables
+
+ENV TZ=Europe/Rome
+
+# Force the use of iptables-legacy for compatibility with the host
+RUN if [ -f /usr/sbin/iptables-legacy ]; then \
+      ln -sf /usr/sbin/iptables-legacy /usr/sbin/iptables; \
+    else \
+      echo "iptables-legacy non trovato, verifica il pacchetto"; \
+    fi
+
+RUN cd /usr/lib/python3.12 && \
+    rm EXTERNALLY-MANAGED
+
+ADD requirements.txt /
+
+ADD entrypoint.sh /
+
+RUN chmod +x /entrypoint.sh
+
+RUN pip3 install wheel && mkdir -p /privacy-manager/
+
+WORKDIR /privacy-manager/
+
+RUN pip3 install -r /requirements.txt
+
+COPY . /privacy-manager/
+
+RUN chmod +x /privacy-manager/entrypoint.sh
+
+ENTRYPOINT ["/privacy-manager/entrypoint.sh"]

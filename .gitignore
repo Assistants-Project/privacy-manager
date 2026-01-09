@@ -1,0 +1,33 @@
+# --- Python ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+*.sqlite3
+
+# --- Virtual environment ---
+.venv/
+env/
+venv/
+ENV/
+
+# --- Logs ---
+logs/
+
+# --- Build artifacts ---
+*.tar
+
+# --- OS / editor junk ---
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# --- Test cache ---
+.pytest_cache/
+.coverage
+htmlcov/
+.cache/
